@@ -1,0 +1,17 @@
+{
+  "name": "Foyer – Tâches ménagères",
+  "short_name": "Foyer",
+  "lang": "fr",
+  "start_url": "./index.html",
+  "display": "standalone",
+  "background_color": "#f1f4f9",
+  "theme_color": "#17213b",
+  "icons": [
+    {
+      "src": "icon.svg",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "any maskable"
+    }
+  ]
+}
