@@ -18,9 +18,21 @@ main{max-width:760px;margin:-10px auto 90px;padding:0 14px}
 h2{font-size:15px;font-weight:800;margin-bottom:10px}
 .bar{display:flex;height:16px;border-radius:8px;overflow:hidden;background:var(--line);position:relative}
 .bar i{display:block;height:100%}.mark{position:absolute;top:-4px;bottom:-4px;width:2px;background:var(--ink)}
+.bar.sm{height:10px}
 .lg{display:flex;justify-content:space-between;font-size:13px;margin-top:8px;color:var(--mut)}.lg b{color:var(--ink)}
-.mem{display:grid;grid-template-columns:repeat(5,1fr);gap:6px;margin-top:14px;text-align:center;font-size:12px}
-.av{width:38px;height:38px;border-radius:50%;margin:0 auto 4px;display:grid;place-items:center;color:#fff;font-weight:800}
+.av{width:38px;height:38px;border-radius:50%;display:grid;place-items:center;color:#fff;font-weight:800;flex:none}
+.pr{display:flex;gap:10px;align-items:center;margin-top:14px}.pr .pb{flex:1}
+.pl{display:flex;justify-content:space-between;font-size:13px;margin-bottom:5px}.pl span{color:var(--mut)}
+.hd{display:flex;justify-content:space-between;align-items:center;margin-bottom:10px}.hd h2{margin:0}
+.seg{display:flex;gap:4px}.seg button{border:1px solid var(--line);background:#fff;border-radius:10px;padding:5px 12px;cursor:pointer;font-size:13px}.seg .on{background:var(--ink);color:#fff;border-color:var(--ink)}
+.kp{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-bottom:12px;text-align:center}
+.kp div{background:var(--bg);border-radius:12px;padding:10px 4px;font-size:12px;color:var(--mut)}.kp b{display:block;font-size:20px;color:var(--ink)}
+.low{background:#fde8e8;color:#b42318;border-radius:12px;padding:10px 12px;font-size:13px;margin-bottom:6px}
+.ch{display:flex;gap:6px;height:100px;margin-top:6px}
+.ch>div{flex:1;display:flex;flex-direction:column;justify-content:flex-end;text-align:center;font-size:11px;color:var(--mut)}
+.ch i{display:block;background:var(--par);border-radius:6px 6px 0 0;min-height:2px;margin-bottom:3px}
+.sub{font-size:13px;font-weight:800;margin:16px 0 4px}
+.tp{display:flex;justify-content:space-between;font-size:13px;padding:5px 0;border-top:1px solid var(--line)}.tp span{color:var(--mut)}
 .wk{display:flex;align-items:center;justify-content:space-between;margin-bottom:10px}
 .wk button{background:none;border:1px solid var(--line);border-radius:10px;padding:6px 12px;cursor:pointer}
 .days{display:grid;grid-template-columns:repeat(7,1fr);gap:5px;margin-bottom:12px}
@@ -28,7 +40,6 @@ h2{font-size:15px;font-weight:800;margin-bottom:10px}
 .d b{display:block;font-size:16px;color:var(--ink)}.d.on{background:var(--ink);border-color:var(--ink);color:#ffffffb0}.d.on b{color:#fff}
 .d.today b::after{content:'';display:block;width:5px;height:5px;background:var(--kid);border-radius:50%;margin:1px auto 0}
 .t{display:flex;gap:12px;align-items:center;padding:12px 0;border-top:1px solid var(--line)}.t:first-of-type{border-top:0}
-.h{width:54px;font-weight:800;font-size:13px}
 .t .n{flex:1}.t small{color:var(--mut);display:block}
 .chip{font-size:12px;font-weight:600;color:#fff;border-radius:20px;padding:3px 10px}
 .ck{width:28px;height:28px;border-radius:50%;border:2px solid var(--line);background:#fff;cursor:pointer;color:#fff}
@@ -41,7 +52,7 @@ h2{font-size:15px;font-weight:800;margin-bottom:10px}
 .sh{background:#fff;width:100%;max-width:560px;border-radius:20px 20px 0 0;padding:20px;max-height:90vh;overflow:auto}
 label{display:block;font-weight:600;font-size:13px;margin:12px 0 6px}
 .sh select,.sh input{width:100%;padding:11px;border:1px solid var(--line);border-radius:10px;background:#fff}
-.slots{display:grid;grid-template-columns:repeat(4,1fr);gap:6px}
+.slots{display:grid;grid-template-columns:repeat(5,1fr);gap:6px;margin-top:6px}
 .slots button{padding:9px 0;border:1px solid var(--line);background:#fff;border-radius:10px;cursor:pointer}.slots .on{background:var(--ink);color:#fff}
 .empty{color:var(--mut);padding:18px 0;text-align:center}
 #warn{background:#fff4d6;padding:10px 16px;font-size:13px;display:none}
@@ -49,67 +60,88 @@ label{display:block;font-weight:600;font-size:13px;margin:12px 0 6px}
 <div id="warn">Firebase n'est pas configuré : renseignez FIREBASE_CONFIG dans index.html.</div>
 <header><div class="top"><h1>Foyer</h1><select class="me" id="me" aria-label="Qui êtes-vous ?"></select></div></header>
 <main>
- <section class="card"><h2>Répartition de la semaine</h2><div class="bar" id="bar"></div><div class="lg" id="lg"></div><div class="mem" id="mem"></div></section>
+ <section class="card"><h2>Objectifs de la semaine</h2><div class="bar" id="bar"></div><div class="lg" id="lg"></div><div id="mem"></div></section>
  <section class="card">
   <div class="wk"><button id="pv" aria-label="Semaine précédente">‹</button><b id="wl"></b><button id="nx" aria-label="Semaine suivante">›</button></div>
   <div class="days" id="days"></div><div id="list"></div>
-  <div style="display:flex;gap:8px;margin-top:12px"><button class="btn alt" id="gen">Générer la semaine</button></div>
+ </section>
+ <section class="card">
+  <div class="hd"><h2>Statistiques</h2><div class="seg"><button id="sw" class="on">Semaine</button><button id="sa">Total</button></div></div>
+  <div id="st"></div>
  </section>
 </main>
-<button class="btn fab" id="vol">Je me porte volontaire</button>
-<div class="ov" id="ov"><div class="sh" role="dialog" aria-label="Se porter volontaire">
- <h2 style="font-size:18px">Se porter volontaire</h2>
- <label for="ft">Tâche</label><select id="ft"></select>
+<button class="btn fab" id="vol">Ajouter une tâche</button>
+<div class="ov" id="ov"><div class="sh" role="dialog" aria-label="Ajouter une tâche">
+ <h2 style="font-size:18px">Ajouter une tâche</h2>
+ <label for="fw">Qui ?</label><select id="fw"></select>
+ <label for="fn">Tâche</label><input id="fn" list="sg" placeholder="Ex. : vaisselle" autocomplete="off"><datalist id="sg"></datalist>
+ <label for="fm">Durée (minutes)</label><input id="fm" type="number" min="1" inputmode="numeric" value="15">
+ <div class="slots" id="vq"></div>
  <label>Jour</label><div class="days" id="vd"></div>
- <label>Horaire</label><div class="slots" id="vs"></div>
- <div style="display:flex;gap:8px;margin-top:18px"><button class="btn alt" id="cx">Annuler</button><button class="btn" id="ok" style="flex:1">Confirmer pour moi</button></div>
+ <div class="slots" id="vs" style="grid-template-columns:repeat(2,1fr)"></div>
+ <div style="display:flex;gap:8px;margin-top:18px"><button class="btn alt" id="cx">Annuler</button><button class="btn" id="ok" style="flex:1">Ajouter</button></div>
 </div></div>
 <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-app-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore-compat.js"></script>
 <script>
 const FIREBASE_CONFIG={apiKey:"AIzaSyAVhnfrGW1Vfo1OdieQU5juPOh7qQEoB4M",authDomain:"foyer-ceb09.firebaseapp.com",projectId:"foyer-ceb09",storageBucket:"foyer-ceb09.firebasestorage.app",messagingSenderId:"71842787982",appId:"1:71842787982:web:04f8e6c7bc205c4b528fdf"};
-const M=[{id:'ludivine',n:'Ludivine',p:1,c:'#3b4cca'},{id:'mickael',n:'Mickael',p:1,c:'#5a6be0'},{id:'tess',n:'Tess',c:'#e0961a'},{id:'lukas',n:'Lukas',c:'#c77d0a'},{id:'manon',n:'Manon',c:'#f2b632'}];
-// Tâches récurrentes : nom, minutes, jours (0=lundi), heure
-const R=[['Préparer le dîner',45,[0,1,2,3,4,5,6],'18:30'],['Vaisselle',20,[0,1,2,3,4,5,6],'19:45'],['Sortir les poubelles',10,[1,4],'18:00'],['Aspirateur',30,[2,5],'17:00'],['Lessive et étendage',30,[0,3],'18:30'],['Salle de bain',40,[5],'10:00'],['Courses',60,[5],'09:30'],['Ranger le salon',15,[0,2,4,6],'17:30']];
-const H=['08:00','09:00','10:00','11:00','14:00','15:00','16:00','17:00','18:00','19:00','20:00','21:00'];
+// o = objectif personnel en % du total des minutes faites (parents 2×20 = 40 %, enfants 3×20 = 60 %)
+const M=[{id:'ludivine',n:'Ludivine',p:1,o:20,c:'#3b4cca'},{id:'mickael',n:'Mickael',p:1,o:20,c:'#5a6be0'},{id:'tess',n:'Tess',o:20,c:'#e0961a'},{id:'lukas',n:'Lukas',o:20,c:'#c77d0a'},{id:'manon',n:'Manon',o:20,c:'#f2b632'}];
+const SUG=['Préparer le dîner','Vaisselle','Sortir les poubelles','Aspirateur','Lessive et étendage','Salle de bain','Courses','Ranger le salon'];
 const JN=['Lun','Mar','Mer','Jeu','Ven','Sam','Dim'];
-const $=s=>document.querySelector(s),mb=id=>M.find(m=>m.id===id);
-let db,items=[],off=0,sel=0,me=localStorage.me||'ludivine',vd=0,vh='17:00';
+const $=s=>document.querySelector(s),mb=id=>M.find(m=>m.id===id)||M[0];
+let db,items=[],off=0,sel=0,me=localStorage.me||'ludivine',vd=0,mn=15,ds=true,scope='w';
 if(FIREBASE_CONFIG.apiKey.startsWith('VOTRE')){$('#warn').style.display='block'}else{firebase.initializeApp(FIREBASE_CONFIG);db=firebase.firestore();db.collection('taches').onSnapshot(s=>{items=s.docs.map(d=>({id:d.id,...d.data()}));render()},e=>{$('#warn').textContent='Erreur Firebase : '+e.message;$('#warn').style.display='block'})}
 const iso=d=>d.getFullYear()+'-'+String(d.getMonth()+1).padStart(2,'0')+'-'+String(d.getDate()).padStart(2,'0');
 function monday(){const d=new Date();d.setHours(12,0,0,0);d.setDate(d.getDate()-((d.getDay()+6)%7)+off*7);return d}
 const wd=i=>{const d=monday();d.setDate(d.getDate()+i);return d};
 const wk=()=>items.filter(t=>t.date>=iso(wd(0))&&t.date<=iso(wd(6)));
 function dayBtns(el,cur,fn){el.innerHTML='';for(let i=0;i<7;i++){const d=wd(i),b=document.createElement('button');b.className='d'+(i===cur?' on':'')+(iso(d)===iso(new Date())?' today':'');b.innerHTML=JN[i]+'<b>'+d.getDate()+'</b>';b.onclick=()=>fn(i);el.append(b)}}
+// minutes et nombre de tâches FAITES par personne
+function tally(S){const by={},ct={};M.forEach(m=>{by[m.id]=0;ct[m.id]=0});S.filter(t=>t.done).forEach(t=>{if(by[t.who]!=null){by[t.who]+=t.min;ct[t.who]++}});return{by,ct,tot:Object.values(by).reduce((a,b)=>a+b,0)}}
+function lowest(by,tot){if(!tot)return'';const lo=Math.min(...M.map(m=>by[m.id])),n=M.filter(m=>by[m.id]===lo).map(m=>m.n).join(', ');return`<div class="low">Le moins investi : <b>${n}</b> (${lo} min faites)</div>`}
 function render(){
  $('#me').innerHTML=M.map(m=>`<option value="${m.id}"${m.id===me?' selected':''}>${m.n}</option>`).join('');
  const a=wd(0),b=wd(6),f=d=>d.toLocaleDateString('fr-FR',{day:'numeric',month:'short'});$('#wl').textContent=f(a)+' – '+f(b);
- const w=wk(),tot=w.reduce((s,t)=>s+t.min,0)||1,by={};M.forEach(m=>by[m.id]=0);w.forEach(t=>by[t.who]!=null&&(by[t.who]+=t.min));
- const pp=Math.round(100*(by.ludivine+by.mickael)/tot),kp=w.length?100-pp:0;
- $('#bar').innerHTML=`<i style="width:${pp}%;background:var(--par)"></i><i style="width:${kp}%;background:var(--kid)"></i><span class="mark" style="left:40%"></span>`;
- $('#lg').innerHTML=`<span>Parents <b>${pp}%</b> (objectif 40%)</span><span>Enfants <b>${kp}%</b> (objectif 60%)</span>`;
- $('#mem').innerHTML=M.map(m=>`<div><div class="av" style="background:${m.c}">${m.n[0]}</div>${m.n}<br><b>${Math.round(by[m.id]/tot*100)}%</b> · ${by[m.id]} min</div>`).join('');
+ const w=wk(),{by,tot}=tally(w),T=tot||1;
+ const po=M.filter(m=>m.p).reduce((s,m)=>s+m.o,0),pm=M.filter(m=>m.p).reduce((s,m)=>s+by[m.id],0);
+ const pp=tot?Math.round(100*pm/tot):0,kp=tot?100-pp:0;
+ $('#bar').innerHTML=`<i style="width:${pp}%;background:var(--par)"></i><i style="width:${kp}%;background:var(--kid)"></i><span class="mark" style="left:${po}%"></span>`;
+ $('#lg').innerHTML=`<span>Parents <b>${pp}%</b> (objectif ${po}%)</span><span>Enfants <b>${kp}%</b> (objectif ${100-po}%)</span>`;
+ $('#mem').innerHTML=M.map(m=>{const s=Math.round(by[m.id]/T*100),ok=tot&&s>=m.o;return`<div class="pr"><div class="av" style="background:${m.c}">${m.n[0]}</div><div class="pb"><div class="pl"><b>${m.n}${ok?' ✓':''}</b><span>${s}% / ${m.o}% · ${by[m.id]} min</span></div><div class="bar sm"><i style="width:${Math.min(100,s/m.o*100)}%;background:${ok?'var(--ok)':m.c}"></i></div></div></div>`}).join('');
  dayBtns($('#days'),sel,i=>{sel=i;render()});
- const L=w.filter(t=>t.date===iso(wd(sel))).sort((x,y)=>x.h.localeCompare(y.h));
- $('#list').innerHTML=L.length?L.map(t=>{const m=mb(t.who);return`<div class="t ${t.done?'done':''}"><div class="h">${t.h}</div><div class="n">${t.nom}<small>${t.min} min${t.vol?' · volontaire':''}</small></div><span class="chip" style="background:${m.c}">${m.n}</span><button class="ck" onclick="tg('${t.id}',${!t.done})" aria-label="Terminée">${t.done?'✓':''}</button><button class="x" onclick="rm('${t.id}')" aria-label="Supprimer">×</button></div>`}).join(''):'<div class="empty">Rien de prévu ce jour-là.</div>';
+ const L=w.filter(t=>t.date===iso(wd(sel))).sort((x,y)=>(x.done-y.done)||((x.ts||0)-(y.ts||0)));
+ $('#list').innerHTML=L.length?L.map(t=>{const m=mb(t.who);return`<div class="t ${t.done?'done':''}"><div class="n">${esc(t.nom)}<small>${t.min} min</small></div><span class="chip" style="background:${m.c}">${m.n}</span><button class="ck" onclick="tg('${t.id}',${!t.done})" aria-label="Terminée">${t.done?'✓':''}</button><button class="x" onclick="rm('${t.id}')" aria-label="Supprimer">×</button></div>`}).join(''):'<div class="empty">Rien d\'ajouté ce jour-là.</div>';
+ stats(w);
 }
+const esc=s=>String(s).replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
+function stats(w){
+ $('#sw').className=scope==='w'?'on':'';$('#sa').className=scope==='a'?'on':'';
+ const S=scope==='w'?w:items,{by,ct,tot}=tally(S),n=S.length,dn=S.filter(t=>t.done).length,mx=Math.max(...M.map(m=>by[m.id]),1);
+ let h=`<div class="kp"><div><b>${dn}/${n}</b>tâches faites</div><div><b>${tot}</b>minutes faites</div><div><b>${n?Math.round(100*dn/n):0}%</b>réalisation</div></div>`+lowest(by,tot);
+ h+='<div class="sub">Classement</div>'+M.slice().sort((x,y)=>by[y.id]-by[x.id]).map(m=>`<div class="pr" style="margin-top:8px"><div class="pb"><div class="pl"><b>${m.n}</b><span>${by[m.id]} min · ${ct[m.id]} tâche${ct[m.id]>1?'s':''}</span></div><div class="bar sm"><i style="width:${by[m.id]/mx*100}%;background:${m.c}"></i></div></div></div>`).join('');
+ if(scope==='w'){const dm=[0,1,2,3,4,5,6].map(i=>w.filter(t=>t.done&&t.date===iso(wd(i))).reduce((s,t)=>s+t.min,0)),dx=Math.max(...dm,1);
+  h+='<div class="sub">Minutes faites par jour</div><div class="ch">'+dm.map((v,i)=>`<div><i style="height:${v/dx*70}px"></i>${v||''}<br>${JN[i]}</div>`).join('')+'</div>'}
+ const tc={};S.filter(t=>t.done).forEach(t=>{const k=t.nom.trim().toLowerCase();(tc[k]=tc[k]||{nom:t.nom.trim(),c:0,m:0}).c++;tc[k].m+=t.min});
+ const top=Object.values(tc).sort((x,y)=>y.c-x.c||y.m-x.m).slice(0,5);
+ if(top.length)h+='<div class="sub">Tâches les plus faites</div>'+top.map(t=>`<div class="tp"><b>${esc(t.nom)}</b><span>${t.c}× · ${t.m} min</span></div>`).join('');
+ $('#st').innerHTML=h}
+$('#sw').onclick=()=>{scope='w';render()};$('#sa').onclick=()=>{scope='a';render()};
 const tg=(id,v)=>db&&db.collection('taches').doc(id).update({done:v}),rm=id=>db&&confirm('Supprimer cette tâche ?')&&db.collection('taches').doc(id).delete();
-$('#me').onchange=e=>{me=localStorage.me=e.target.value};
+$('#me').onchange=e=>{me=localStorage.me=e.target.value;render()};
 $('#pv').onclick=()=>{off--;render()};$('#nx').onclick=()=>{off++;render()};
-$('#gen').onclick=async()=>{
- if(!db)return alert("Firebase n'est pas configuré dans index.html.");const w=wk(),load={};M.forEach(m=>load[m.id]=0);w.forEach(t=>load[t.who]!=null&&(load[t.who]+=t.min));
- const have=new Set(w.filter(t=>!t.vol).map(t=>t.nom+t.date)),todo=[];
- R.forEach(([nom,min,days,h])=>days.forEach(i=>{const date=iso(wd(i));if(!have.has(nom+date))todo.push({nom,min,h,date})}));
- if(!todo.length)return alert('La semaine est déjà planifiée.');
- todo.sort((a,b)=>b.min-a.min);const bt=db.batch();
- todo.forEach(t=>{const who=M.slice().sort((a,b)=>load[a.id]-load[b.id])[0].id;load[who]+=t.min;bt.set(db.collection('taches').doc(),{...t,who,done:false,vol:false})});
- try{await bt.commit()}catch(e){alert('Erreur Firebase : '+e.message)}};
-// Volontariat
-function vr(){dayBtns($('#vd'),vd,i=>{vd=i;vr()});$('#vs').innerHTML=H.map(h=>`<button class="${h===vh?'on':''}" onclick="vh='${h}';vr()">${h}</button>`).join('')}
-$('#ft').innerHTML=R.map((r,i)=>`<option value="${i}">${r[0]} (${r[1]} min)</option>`).join('');
-$('#vol').onclick=()=>{vd=sel;vr();$('#ov').classList.add('on')};$('#cx').onclick=()=>$('#ov').classList.remove('on');
-$('#ok').onclick=async()=>{if(!db)return;const r=R[$('#ft').value];
- await db.collection('taches').add({nom:r[0],min:r[1],h:vh,date:iso(wd(vd)),who:me,done:false,vol:true});sel=vd;$('#ov').classList.remove('on')};
+// Ajout d'une tâche
+function vr(){dayBtns($('#vd'),vd,i=>{vd=i;vr()});
+ $('#vq').innerHTML=[10,15,30,45,60].map(x=>`<button class="${x==$('#fm').value?'on':''}" onclick="$('#fm').value=${x};vr()">${x}</button>`).join('');
+ $('#vs').innerHTML=[[1,'Déjà fait'],[0,'À faire']].map(([v,l])=>`<button class="${!!v===ds?'on':''}" onclick="ds=${!!v};vr()">${l}</button>`).join('')}
+$('#fw').innerHTML=M.map(m=>`<option value="${m.id}">${m.n}</option>`).join('');
+$('#vol').onclick=()=>{vd=sel;ds=true;$('#fw').value=me;$('#fn').value='';$('#fm').value=15;
+ $('#sg').innerHTML=[...new Set([...SUG,...items.map(t=>t.nom)])].map(s=>`<option value="${esc(s)}">`).join('');vr();$('#ov').classList.add('on')};
+$('#cx').onclick=()=>$('#ov').classList.remove('on');
+$('#ok').onclick=async()=>{if(!db)return alert("Firebase n'est pas configuré dans index.html.");
+ const nom=$('#fn').value.trim(),min=parseInt($('#fm').value,10);
+ if(!nom)return alert('Indiquez la tâche.');if(!(min>0))return alert('Indiquez une durée en minutes.');
+ try{await db.collection('taches').add({nom,min,date:iso(wd(vd)),who:$('#fw').value,done:ds,ts:Date.now()});sel=vd;$('#ov').classList.remove('on')}catch(e){alert('Erreur Firebase : '+e.message)}};
 render();
 if('serviceWorker'in navigator)navigator.serviceWorker.register('sw.js');
 </script></body></html>
