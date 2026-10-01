@@ -75,7 +75,7 @@ const H=['08:00','09:00','10:00','11:00','14:00','15:00','16:00','17:00','18:00'
 const JN=['Lun','Mar','Mer','Jeu','Ven','Sam','Dim'];
 const $=s=>document.querySelector(s),mb=id=>M.find(m=>m.id===id);
 let db,items=[],off=0,sel=0,me=localStorage.me||'ludivine',vd=0,vh='17:00';
-if(FIREBASE_CONFIG.apiKey.startsWith('VOTRE')){$('#warn').style.display='block'}else{firebase.initializeApp(FIREBASE_CONFIG);db=firebase.firestore();db.collection('taches').onSnapshot(s=>{items=s.docs.map(d=>({id:d.id,...d.data()}));render()})}
+if(FIREBASE_CONFIG.apiKey.startsWith('VOTRE')){$('#warn').style.display='block'}else{firebase.initializeApp(FIREBASE_CONFIG);db=firebase.firestore();db.collection('taches').onSnapshot(s=>{items=s.docs.map(d=>({id:d.id,...d.data()}));render()},e=>{$('#warn').textContent='Erreur Firebase : '+e.message;$('#warn').style.display='block'})}
 const iso=d=>d.getFullYear()+'-'+String(d.getMonth()+1).padStart(2,'0')+'-'+String(d.getDate()).padStart(2,'0');
 function monday(){const d=new Date();d.setHours(12,0,0,0);d.setDate(d.getDate()-((d.getDay()+6)%7)+off*7);return d}
 const wd=i=>{const d=monday();d.setDate(d.getDate()+i);return d};
@@ -97,13 +97,13 @@ const tg=(id,v)=>db&&db.collection('taches').doc(id).update({done:v}),rm=id=>db&
 $('#me').onchange=e=>{me=localStorage.me=e.target.value};
 $('#pv').onclick=()=>{off--;render()};$('#nx').onclick=()=>{off++;render()};
 $('#gen').onclick=async()=>{
- if(!db)return;const w=wk(),load={};M.forEach(m=>load[m.id]=0);w.forEach(t=>load[t.who]!=null&&(load[t.who]+=t.min));
+ if(!db)return alert("Firebase n'est pas configuré dans index.html.");const w=wk(),load={};M.forEach(m=>load[m.id]=0);w.forEach(t=>load[t.who]!=null&&(load[t.who]+=t.min));
  const have=new Set(w.filter(t=>!t.vol).map(t=>t.nom+t.date)),todo=[];
  R.forEach(([nom,min,days,h])=>days.forEach(i=>{const date=iso(wd(i));if(!have.has(nom+date))todo.push({nom,min,h,date})}));
  if(!todo.length)return alert('La semaine est déjà planifiée.');
  todo.sort((a,b)=>b.min-a.min);const bt=db.batch();
  todo.forEach(t=>{const who=M.slice().sort((a,b)=>load[a.id]-load[b.id])[0].id;load[who]+=t.min;bt.set(db.collection('taches').doc(),{...t,who,done:false,vol:false})});
- await bt.commit()};
+ try{await bt.commit()}catch(e){alert('Erreur Firebase : '+e.message)}};
 // Volontariat
 function vr(){dayBtns($('#vd'),vd,i=>{vd=i;vr()});$('#vs').innerHTML=H.map(h=>`<button class="${h===vh?'on':''}" onclick="vh='${h}';vr()">${h}</button>`).join('')}
 $('#ft').innerHTML=R.map((r,i)=>`<option value="${i}">${r[0]} (${r[1]} min)</option>`).join('');
